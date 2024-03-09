@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
+// bootstrap/dist/css/bootstrap.css it is used for class of bootstrap for styling
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
+
 import { toast } from 'react-toastify';
 
+// redux start
+// useDispatch are use to send value to store componenet
 import { useDispatch } from 'react-redux';
 import { addtocart } from '../Action/index';
+// redux end
 
 const View = () => {
+
+    // it is use to show data
     const [data, setData] = useState([]);
+
+    // it is use to show hide of datail model
     const [show, setShow] = useState(false);
+
+    // it is use to show particular data on details
     const [singledata, setSingledata] = useState({});
+
     // const [filterdata, setFilterdata] = useState({});
 
+    // redux start
+    // useDispatch are calling in this way
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -34,7 +48,6 @@ const View = () => {
                 'Content-Type': 'application/json',
             }
         }).then((res) => {
-            console.log(res.data)
             cartcount()
             if (res.data.message === 'Invalid Token') {
                 toast.warning('You are not logged in', {
