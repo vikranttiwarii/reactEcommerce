@@ -5,14 +5,19 @@ import 'bootstrap/dist/css/bootstrap.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+import { useDispatch } from 'react-redux';
+import { addtocart } from '../Action/index';
+
 const View = () => {
     const [data, setData] = useState([]);
     const [show, setShow] = useState(false);
     const [singledata, setSingledata] = useState({});
     // const [filterdata, setFilterdata] = useState({});
 
+    const dispatch = useDispatch()
+
     useEffect(() => {
-        axios.get(' http://localhost:5000/getall/product').then((res) => {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/getall/product`).then((res) => {
             setData(res.data.data)
 
         }).catch((err) => {
@@ -23,7 +28,7 @@ const View = () => {
     function addToCart(productId) {
         let obj = {}
         obj['productId'] = productId
-        axios.post('http://localhost:5000/add/cart', obj, {
+        axios.post(`${process.env.REACT_APP_BASE_URL}/add/cart`, obj, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json',
@@ -51,13 +56,13 @@ const View = () => {
 
     // totalcartItem
     function cartcount() {
-        axios.get('http://localhost:5000/userCartData',{
+        axios.get(`${process.env.REACT_APP_BASE_URL}/userCartData`,{
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json',
             }
         }).then((res) => {
-            console.log(res.data.totalCartItem)
+            dispatch(addtocart(res.data.totalCartItem))
         }).catch((err) => {
             console.log(err)
         })
