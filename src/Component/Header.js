@@ -11,7 +11,8 @@ import { Link } from 'react-router-dom';
 
 // redux it used to get value into store
 import { useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
+import { addtocart } from '../Action/index';
 
 import { useFormik } from 'formik';
 import * as Yup from "yup";
@@ -25,25 +26,29 @@ const Header = () => {
     const [userName, setUserName] = useState('');
 
     const [cartCount, setCartCount] = useState(0)
-    let cartData = useSelector((state)=> state.cartItem)
+    let cartData = useSelector((state) => state.cartItem)
+    // console.log(cartData)
 
-    useEffect(()=>{
+    // redux start
+    // useDispatch are calling in this way
+    const dispatch = useDispatch()
+
+    useEffect(() => {
         getProfileData();
         cartcount()
-    },[])
+    }, [])
 
     function cartcount() {
-        axios.get(`${process.env.REACT_APP_BASE_URL}/userCartData`,{
+        axios.get(`${process.env.REACT_APP_BASE_URL}/userCartData`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json',
             }
         }).then((res) => {
-            console.log(res.data.totalCartItem,'aDS')
-            if(res.data.totalCartItem){
+            // console.log(res.data.totalCartItem, 'aDS')
+            if (res.data.totalCartItem) {
                 setCartCount(res.data.totalCartItem)
             }
-            // console.log(res.data.totalCartItem)
         }).catch((err) => {
             console.log(err)
         })
@@ -76,7 +81,7 @@ const Header = () => {
                             position: toast.POSITION.TOP_RIGHT,
                         })
                         localStorage.setItem('token', res.data.token)
-                        cartData=0
+                        dispatch(addtocart(0))
                         getProfileData();
                         cartcount()
                     }
@@ -188,7 +193,7 @@ const Header = () => {
                                 <path
                                     d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
                             </svg></i>
-                            <p className="cart-count" >{cartData>cartCount ? cartData : cartCount}</p>
+                            <p className="cart-count" >{cartData > cartCount ? cartData : cartCount}</p>
                             <Link to="/cart" className="ps-2" style={{ cursor: 'pointer' }}>Cart</Link>
                         </div >
                         <div className="myorder">
@@ -200,7 +205,7 @@ const Header = () => {
                         <div className="profile">
                             <Link to="/profile">
                                 <span><i className="fa-regular fa-xl fa-user"></i></span>
-                                <span className="ps-2" style={{color:'black',fontSize:'large'}}>{userName}</span >
+                                <span className="ps-2" style={{ color: 'black', fontSize: 'large' }}>{userName}</span >
                             </Link>
                         </div >
                         <div className="profile">
