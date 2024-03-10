@@ -18,9 +18,9 @@ const Cart = () => {
   // it is use to show particular data on details
   const [singledata, setSingledata] = useState({});
 
-      // redux start
-    // useDispatch are calling in this way
-    const dispatch = useDispatch()
+  // redux start
+  // useDispatch are calling in this way
+  const dispatch = useDispatch()
 
   useEffect(() => {
     getCartData()
@@ -39,9 +39,9 @@ const Cart = () => {
     })
   }
 
-  const removeCartData = (productid)=>{
+  const removeCartData = (productid) => {
     let obj = {
-      productid:productid
+      productid: productid
     }
 
     axios.post(`${process.env.REACT_APP_BASE_URL}/deleteCartData`, obj, {
@@ -50,11 +50,11 @@ const Cart = () => {
         'Content-Type': 'application/json',
       }
     }).then((res) => {
-      if(res.data.error===false){
+      if (res.data.error === false) {
         cartcount()
         toast.success('item remove to cart', {
           position: toast.POSITION.TOP_RIGHT,
-      })
+        })
       }
     }).catch((err) => {
       console.log(err)
@@ -63,21 +63,21 @@ const Cart = () => {
 
   function cartcount() {
     axios.get(`${process.env.REACT_APP_BASE_URL}/userCartData`, {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
-        }
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      }
     }).then((res) => {
-        // console.log(res.data.totalCartItem, 'aDS')
-        if (res.data.totalCartItem) {
-          console.log(res.data.totalCartItem)
-          dispatch(addtocart(res.data.totalCartItem))
-            // setCartCount(res.data.totalCartItem)
-        }
+      // console.log(res.data.totalCartItem, 'aDS')
+      if (res.data.totalCartItem) {
+        console.log(res.data.totalCartItem)
+        dispatch(addtocart(res.data.totalCartItem))
+        // setCartCount(res.data.totalCartItem)
+      }
     }).catch((err) => {
-        console.log(err)
+      console.log(err)
     })
-}
+  }
 
   return (
     <>
@@ -93,7 +93,7 @@ const Cart = () => {
                     <p className='text-center' style={{ lineHeight: '0%' }}><b>&#8377; </b> {element.productPrice}</p>
                     <div className='text-center'>
                       <button className="btn btn-success mt-3 me-3">BuyNow</button>
-                      <button className="btn btn-danger mt-3" onClick={()=> removeCartData(element._id)}>Remove</button>
+                      <button className="btn btn-danger mt-3" onClick={() => removeCartData(element._id)}>Remove</button>
                     </div>
                     <div className='text-center'>
                       <button className="btn btn-outline-dark mt-3" data-bs-toggle="modal" data-bs-target="#detail" style={{ textDecoration: 'none' }} onClick={() => { setSingledata(element); setShow(true) }}>Detail</button>
