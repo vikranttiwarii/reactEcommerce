@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 // redux start
 // useDispatch are use to send value to store componenet
 import { useDispatch } from 'react-redux';
-import { addtocart } from '../Action/index';
+import { addtocart, sendData } from '../Action/index';
 // redux end
 
 const View = () => {
@@ -34,6 +34,8 @@ const View = () => {
         axios.get(`${process.env.REACT_APP_BASE_URL}/getall/product`).then((res) => {
             setData(res.data.data)
 
+            // this is only for practice
+            // dispatch(sendData(res.data.data))
         }).catch((err) => {
             console.log(err)
         })
@@ -69,7 +71,7 @@ const View = () => {
 
     // totalcartItem
     function cartcount() {
-        axios.get(`${process.env.REACT_APP_BASE_URL}/userCartData`,{
+        axios.get(`${process.env.REACT_APP_BASE_URL}/userCartData`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json',
@@ -93,29 +95,31 @@ const View = () => {
     // }
 
     return (
-        <div className='ps-5 pe-5 d-flex justify-content-between flex-wrap'>
-            {
-                data.map((element) => {
-                    return (
-                        <Card style={{ width: '20rem', marginTop: '20px' }}>
-                            <Card.Img variant="top" src={element.imgUrl} style={{ maxHeight: '200px' }} />
-                            <Card.Body>
-                                <Card.Text >
-                                    <p className='text-center'><b>{element.productName}</b>&nbsp;({element.productStorage})</p>
-                                    <p className='text-center' style={{ lineHeight: '0%' }}><b>&#8377; </b> {element.productPrice}</p>
-                                    <div className='text-center'>
-                                        <button className="btn btn-success mt-3 me-3">BuyNow</button>
-                                        <button className="btn btn-primary mt-3" onClick={() => addToCart(element._id)}>Add to Cart</button>
-                                    </div>
-                                    <div className='text-center'>
-                                        <button className="btn btn-outline-dark mt-3" data-bs-toggle="modal" data-bs-target="#detail" style={{ textDecoration: 'none' }} onClick={() => { setSingledata(element); setShow(true) }}>Detail</button>
-                                    </div>
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    )
-                })
-            }
+        <>
+            <div className='ps-5 pe-5 d-flex justify-content-between flex-wrap'>
+                {
+                    data.map((element) => {
+                        return (
+                            <Card style={{ width: '20rem', marginTop: '20px' }}>
+                                <Card.Img variant="top" src={element.imgUrl} style={{ maxHeight: '200px' }} />
+                                <Card.Body>
+                                    <Card.Text >
+                                        <p className='text-center'><b>{element.productName}</b>&nbsp;({element.productStorage})</p>
+                                        <p className='text-center' style={{ lineHeight: '0%' }}><b>&#8377; </b> {element.productPrice}</p>
+                                        <div className='text-center'>
+                                            <button className="btn btn-success mt-3 me-3">BuyNow</button>
+                                            <button className="btn btn-primary mt-3" onClick={() => addToCart(element._id)}>Add to Cart</button>
+                                        </div>
+                                        <div className='text-center'>
+                                            <button className="btn btn-outline-dark mt-3" data-bs-toggle="modal" data-bs-target="#detail" style={{ textDecoration: 'none' }} onClick={() => { setSingledata(element); setShow(true) }}>Detail</button>
+                                        </div>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        )
+                    })
+                }
+            </div>
 
             <Modal size="xl" aria-labelledby="contained-modal-title-vcenter" centered show={show} onHide={() => setShow(false)}>
                 <Modal.Header closeButton>
@@ -131,7 +135,7 @@ const View = () => {
                     }
                 </Modal.Body>
             </Modal>
-        </div>
+        </>
     )
 }
 

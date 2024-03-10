@@ -5,9 +5,10 @@ export const addtocart = (data)=>{
     }
 }
 
-export const removetocart = (data)=>{
-    return {
-        type:'REMOVE_TO_CART',
-        data:data
-    }
-}
+// this is only for practice
+// export const sendData = (data)=>{
+//     return {
+//         type:'SEND_DATA',
+//         data:data
+//     }
+// }
